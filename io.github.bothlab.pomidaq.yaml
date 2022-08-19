@@ -60,49 +60,7 @@ modules:
       url: https://github.com/opencv/opencv_contrib/archive/4.2.0.tar.gz
       sha256: 8a6b5661611d89baa59a26eb7ccf4abb3e55d73f99bb52d8f7c32265c8a43020
 
-- name: libyaml
-  sources:
-  - type: git
-    url: https://github.com/yaml/libyaml.git
-    tag: '0.2.5'
-
-- name: snowball
-  buildsystem: simple
-  build-commands:
-   - make libstemmer.so -j$FLATPAK_BUILDER_N_JOBS
-   - install -Dm644 include/libstemmer.h /app/include/libstemmer.h
-   - cp -d libstemmer.so.* -t /app/lib/
-   - install -Dm644 libstemmer.so /app/lib/libstemmer.so
-  sources:
-   - type: git
-     url: https://github.com/snowballstem/snowball.git
-     tag: v2.2.0
-   - type: patch
-     path: patches/snowball_build-options.diff
-   - type: patch
-     path: patches/snowball_shared-library.diff
-
-- name: libxmlb
-  buildsystem: meson
-  config-opts:
-   - -Dstemmer=false
-   - -Dintrospection=false
-   - -Dgtkdoc=false
-  sources:
-  - type: git
-    url: https://github.com/hughsie/libxmlb.git
-    tag: '0.3.8'
-
-- name: appstream
-  buildsystem: meson
-  config-opts:
-   - -Dcompose=true
-   - -Dgir=false
-   - -Dapidocs=false
-  sources:
-  - type: git
-    url: https://github.com/ximion/appstream.git
-    tag: v0.15.2
+- modules/appstream.yaml
 
 - name: pomidaq
   buildsystem: cmake-ninja
