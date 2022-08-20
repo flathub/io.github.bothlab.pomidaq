@@ -77,4 +77,4 @@ modules:
   sources:
     - type: git
       url: https://github.com/bothlab/pomidaq.git
-      commit: 9145e342324aa4e9c53f2541492746fb4fef9fe5
+      tag: v0.4.5
