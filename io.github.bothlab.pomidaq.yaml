@@ -7,11 +7,14 @@ rename-icon: pomidaq
 rename-desktop-file: pomidaq.desktop
 
 finish-args:
-  - '--share=ipc'
-  - '--socket=wayland'
-  - '--socket=fallback-x11'
-  - '--device=all'
-  - '--filesystem=host'
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=all
+  - --filesystem=home
+  - --filesystem=/media
+  - --filesystem=/mnt
+  - --filesystem=/srv
 
 add-extensions:
   org.freedesktop.Platform.ffmpeg-full:
