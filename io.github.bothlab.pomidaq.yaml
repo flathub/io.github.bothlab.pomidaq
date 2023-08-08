@@ -64,11 +64,11 @@ modules:
     - /bin/*
   sources:
     - type: archive
-      url: https://github.com/opencv/opencv/archive/refs/tags/4.6.0.tar.gz
-      sha256: 1ec1cba65f9f20fe5a41fda1586e01c70ea0c9a6d7b67c9e13edf0cfe2239277
+      url: https://github.com/opencv/opencv/archive/refs/tags/4.8.0.tar.gz
+      sha256: cbf47ecc336d2bff36b0dcd7d6c179a9bb59e805136af6b9670ca944aef889bd
     - type: archive
-      url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.6.0.tar.gz
-      sha256: 1777d5fd2b59029cf537e5fd6f8aa68d707075822f90bde683fcde086f85f7a7
+      url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.8.0.tar.gz
+      sha256: b4aef0f25a22edcd7305df830fa926ca304ea9db65de6ccd02f6cfa5f3357dbb
 
 - name: pomidaq
   buildsystem: cmake-ninja
@@ -78,4 +78,4 @@ modules:
   sources:
     - type: git
       url: https://github.com/bothlab/pomidaq.git
-      tag: v0.4.5
+      tag: v0.5.0
