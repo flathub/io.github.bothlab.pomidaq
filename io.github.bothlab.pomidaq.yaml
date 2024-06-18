@@ -78,4 +78,6 @@ modules:
   sources:
     - type: git
       url: https://github.com/bothlab/pomidaq.git
-      tag: v0.5.1
+      tag: v0.5.2
+    - type: patch
+      path: patches/01_metainfo-add-developer-id.patch
