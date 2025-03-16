@@ -1,6 +1,6 @@
 id: io.github.bothlab.pomidaq
 runtime: org.kde.Platform
-runtime-version: 5.15-23.08
+runtime-version: '6.8'
 sdk: org.kde.Sdk
 command: pomidaq
 rename-icon: pomidaq
@@ -18,7 +18,7 @@ finish-args:
 
 add-extensions:
   org.freedesktop.Platform.ffmpeg-full:
-    version: '23.08'
+    version: '24.08'
     directory: lib/ffmpeg
     add-ld-path: '.'
     autodelete: false
@@ -35,6 +35,27 @@ modules:
   build-commands:
     - mkdir -p /app/lib/ffmpeg
 
+- name: openblas
+  no-autogen: true
+  make-args:
+    - DYNAMIC_ARCH=1
+    - FC=gfortran
+    - NO_LAPACKE=1
+    - USE_OPENMP=1
+    - NO_WARMUP=1
+    - NUM_THREADS=64
+  make-install-args:
+    - PREFIX=/app
+  sources:
+    - type: archive
+      url: https://github.com/xianyi/OpenBLAS/releases/download/v0.3.28/OpenBLAS-0.3.28.tar.gz
+      sha256: f1003466ad074e9b0c8d421a204121100b0751c96fc6fcf3d1456bd12f8a00a1
+  cleanup:
+    - "*.a"
+    - "/include"
+    - "/lib/cmake"
+    - "/lib/pkgconfig"
+
 - name: opencv
   buildsystem: cmake-ninja
   builddir: true
@@ -47,28 +68,37 @@ modules:
     - -DWITH_OPENMP=ON
     - -DWITH_IPP=ON
     - -DWITH_VULKAN=ON
+    - -DWITH_LAPACK=ON
     - -DBUILD_WITH_DEBUG_INFO=OFF
     - -DBUILD_TESTS=OFF
     - -DBUILD_PERF_TESTS=OFF
     - -DBUILD_EXAMPLES=OFF
     - -DINSTALL_C_EXAMPLES=OFF
     - -DINSTALL_PYTHON_EXAMPLES=OFF
+    - -DCPU_DISPATCH=AVX,AVX2
     - -DWITH_1394=OFF
     - -DWITH_V4L=ON
     - -DWITH_PROTOBUF=ON
+    - -DWITH_QT=ON
     - -DWITH_GTK=OFF
-    - -DWITH_CAROTENE=OFF # fails on Flathub ARM builders and is only relevant for ARM
-    - -DBUILD_LIST=core,dnn,features2d,flann,highgui,imgcodecs,imgproc,ml,objdetect,photo,stitching,video,videoio
+    - -DBUILD_LIST=core,features2d,flann,highgui,imgcodecs,imgproc,ml,objdetect,photo,python_bindings_generator,stitching,video,videoio
+  build-options:
+    env:
+      BLAS: "/app/lib"
+      LAPACK: "/app/lib"
+    arch:
+      aarch64:
+        config-opts:
+          - -DWITH_CAROTENE=OFF # fails on Flathub ARM builders and is only relevant for ARM
   cleanup:
-    - /lib/cmake
-    - /bin/*
+    - /bin
   sources:
     - type: archive
-      url: https://github.com/opencv/opencv/archive/refs/tags/4.8.0.tar.gz
-      sha256: cbf47ecc336d2bff36b0dcd7d6c179a9bb59e805136af6b9670ca944aef889bd
+      url: https://github.com/opencv/opencv/archive/refs/tags/4.10.0.tar.gz
+      sha256: b2171af5be6b26f7a06b1229948bbb2bdaa74fcf5cd097e0af6378fce50a6eb9
     - type: archive
-      url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.8.0.tar.gz
-      sha256: b4aef0f25a22edcd7305df830fa926ca304ea9db65de6ccd02f6cfa5f3357dbb
+      url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.10.0.tar.gz
+      sha256: 65597f8fb8dc2b876c1b45b928bbcc5f772ddbaf97539bf1b737623d0604cba1
 
 - name: pomidaq
   buildsystem: cmake-ninja
@@ -78,6 +108,4 @@ modules:
   sources:
     - type: git
       url: https://github.com/bothlab/pomidaq.git
-      tag: v0.5.2
-    - type: patch
-      path: patches/01_metainfo-add-developer-id.patch
+      tag: v0.6.0
