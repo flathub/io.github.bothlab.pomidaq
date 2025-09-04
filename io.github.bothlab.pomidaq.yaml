@@ -1,6 +1,6 @@
 id: io.github.bothlab.pomidaq
 runtime: org.kde.Platform
-runtime-version: '6.8'
+runtime-version: '6.9'
 sdk: org.kde.Sdk
 command: pomidaq
 rename-icon: pomidaq
@@ -36,13 +36,13 @@ modules:
     - NO_LAPACKE=1
     - USE_OPENMP=1
     - NO_WARMUP=1
-    - NUM_THREADS=64
+    - NUM_THREADS=128
   make-install-args:
     - PREFIX=/app
   sources:
     - type: archive
-      url: https://github.com/xianyi/OpenBLAS/releases/download/v0.3.28/OpenBLAS-0.3.28.tar.gz
-      sha256: f1003466ad074e9b0c8d421a204121100b0751c96fc6fcf3d1456bd12f8a00a1
+      url: https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.30/OpenBLAS-0.3.30.tar.gz
+      sha256: 27342cff518646afb4c2b976d809102e368957974c250a25ccc965e53063c95d
   cleanup:
     - "*.a"
     - "/include"
@@ -70,7 +70,7 @@ modules:
     - -DWITH_1394=OFF
     - -DWITH_V4L=ON
     - -DWITH_PROTOBUF=ON
-    - -DWITH_QT=ON
+    - -DWITH_QT=OFF  # FIXME: Enabling Qt fails the build with a Ninja syntax error when Qt 6.9 is used.
     - -DWITH_GTK=OFF
     - -DBUILD_LIST=core,features2d,flann,highgui,imgcodecs,imgproc,ml,objdetect,photo,stitching,video,videoio
   build-options:
