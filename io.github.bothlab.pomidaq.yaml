@@ -1,6 +1,6 @@
 id: io.github.bothlab.pomidaq
 runtime: org.kde.Platform
-runtime-version: '6.8'
+runtime-version: '6.9'
 sdk: org.kde.Sdk
 command: pomidaq
 rename-icon: pomidaq
