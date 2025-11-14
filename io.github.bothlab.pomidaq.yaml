@@ -17,97 +17,97 @@ finish-args:
   - --filesystem=/srv
 
 cleanup:
- - /include
- - /lib/pkgconfig
- - /lib/*.a
- - /lib/*.la
+  - /include
+  - /lib/pkgconfig
+  - /lib/*.a
+  - /lib/*.la
 
 modules:
-- name: essential-dirs
-  buildsystem: simple
-  build-commands:
-    - mkdir -p /app/lib/ffmpeg
+  - name: essential-dirs
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/ffmpeg
 
-- name: openblas
-  no-autogen: true
-  make-args:
-    - DYNAMIC_ARCH=1
-    - FC=gfortran
-    - NO_LAPACKE=1
-    - USE_OPENMP=1
-    - NO_WARMUP=1
-    - NUM_THREADS=64
-  make-install-args:
-    - PREFIX=/app
-  cleanup:
-    - /bin
-    - /include
-    - /lib/cmake
-    - /lib/*.a
-    - /lib/*.la
-    - /lib/pkgconfig
-    - /share/man
-  sources:
-    - type: archive
-      url: https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.30/OpenBLAS-0.3.30.tar.gz
-      sha512: c726ced2d3e6ebd3ddcd0b13c255bb43fae8c12d2aec15e9ef992b0bc7099996c02cd284ccaaa7b5fac3f23f280b098063dd60f521d97a68dc183ab192fcccdb
-      x-checker-data:
-        type: anitya
-        project-id: 2540
-        url-template: https://github.com/OpenMathLib/OpenBLAS/archive/v$version.tar.gz
+  - name: openblas
+    no-autogen: true
+    make-args:
+      - DYNAMIC_ARCH=1
+      - FC=gfortran
+      - NO_LAPACKE=1
+      - USE_OPENMP=1
+      - NO_WARMUP=1
+      - NUM_THREADS=64
+    make-install-args:
+      - PREFIX=/app
+    cleanup:
+      - /bin
+      - /include
+      - /lib/cmake
+      - /lib/*.a
+      - /lib/*.la
+      - /lib/pkgconfig
+      - /share/man
+    sources:
+      - type: archive
+        url: https://github.com/OpenMathLib/OpenBLAS/archive/v0.3.30.tar.gz
+        sha512: c726ced2d3e6ebd3ddcd0b13c255bb43fae8c12d2aec15e9ef992b0bc7099996c02cd284ccaaa7b5fac3f23f280b098063dd60f521d97a68dc183ab192fcccdb
+        x-checker-data:
+          type: anitya
+          project-id: 2540
+          url-template: https://github.com/OpenMathLib/OpenBLAS/archive/v$version.tar.gz
 
-- name: opencv
-  buildsystem: cmake-ninja
-  builddir: true
-  config-opts:
-    - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-    - -DOPENCV_GENERATE_PKGCONFIG=ON
-    - -DWITH_OPENCL=ON
-    - -DWITH_OPENGL=ON
-    - -DWITH_TBB=ON
-    - -DWITH_OPENMP=ON
-    - -DWITH_VULKAN=ON
-    - -DWITH_LAPACK=ON
-    - -DBUILD_WITH_DEBUG_INFO=OFF
-    - -DBUILD_TESTS=OFF
-    - -DBUILD_PERF_TESTS=OFF
-    - -DBUILD_EXAMPLES=OFF
-    - -DINSTALL_C_EXAMPLES=OFF
-    - -DINSTALL_PYTHON_EXAMPLES=OFF
-    - -DWITH_1394=OFF
-    - -DWITH_V4L=ON
-    - -DWITH_PROTOBUF=ON
-    - -DWITH_QT=ON
-    - -DWITH_GTK=OFF
-    - -DBUILD_LIST=core,features2d,flann,highgui,imgcodecs,imgproc,ml,objdetect,photo,stitching,video,videoio
-  build-options:
-    env:
-      BLAS: "/app/lib"
-      LAPACK: "/app/lib"
-    arch:
-      amd64:
-        config-opts:
-          - -DCPU_BASELINE=AVX2
-          - -DCPU_DISPATCH=AVX,AVX2
-      aarch64:
-        config-opts:
-          - -DWITH_CAROTENE=OFF # fails on Flathub ARM builders and is only relevant for ARM
-  cleanup:
-    - bin
-  sources:
-    - type: archive
-      url: https://github.com/opencv/opencv/archive/refs/tags/4.12.0.tar.gz
-      sha256: 44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d
-    - type: archive
-      url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.12.0.tar.gz
-      sha256: 4197722b4c5ed42b476d42e29beb29a52b6b25c34ec7b4d589c3ae5145fee98e
+  - name: opencv
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DOPENCV_GENERATE_PKGCONFIG=ON
+      - -DWITH_OPENCL=ON
+      - -DWITH_OPENGL=ON
+      - -DWITH_TBB=ON
+      - -DWITH_OPENMP=ON
+      - -DWITH_VULKAN=ON
+      - -DWITH_LAPACK=ON
+      - -DBUILD_WITH_DEBUG_INFO=OFF
+      - -DBUILD_TESTS=OFF
+      - -DBUILD_PERF_TESTS=OFF
+      - -DBUILD_EXAMPLES=OFF
+      - -DINSTALL_C_EXAMPLES=OFF
+      - -DINSTALL_PYTHON_EXAMPLES=OFF
+      - -DWITH_1394=OFF
+      - -DWITH_V4L=ON
+      - -DWITH_PROTOBUF=ON
+      - -DWITH_QT=ON
+      - -DWITH_GTK=OFF
+      - -DBUILD_LIST=core,features2d,flann,highgui,imgcodecs,imgproc,ml,objdetect,photo,stitching,video,videoio
+    build-options:
+      env:
+        BLAS: /app/lib
+        LAPACK: /app/lib
+      arch:
+        amd64:
+          config-opts:
+            - -DCPU_BASELINE=AVX2
+            - -DCPU_DISPATCH=AVX,AVX2
+        aarch64:
+          config-opts:
+            - -DWITH_CAROTENE=OFF # fails on Flathub ARM builders and is only relevant for ARM
+    cleanup:
+      - bin
+    sources:
+      - type: archive
+        url: https://github.com/opencv/opencv/archive/refs/tags/4.12.0.tar.gz
+        sha256: 44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d
+      - type: archive
+        url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.12.0.tar.gz
+        sha256: 4197722b4c5ed42b476d42e29beb29a52b6b25c34ec7b4d589c3ae5145fee98e
 
-- name: pomidaq
-  buildsystem: cmake-ninja
-  builddir: true
-  config-opts:
-    - -DPYTHON=OFF
-  sources:
-    - type: git
-      url: https://github.com/bothlab/pomidaq.git
-      tag: v0.6.0
+  - name: pomidaq
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DPYTHON=OFF
+    sources:
+      - type: git
+        url: https://github.com/bothlab/pomidaq.git
+        tag: v0.6.0
