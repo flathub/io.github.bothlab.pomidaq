@@ -23,11 +23,6 @@ cleanup:
   - /lib/*.la
 
 modules:
-  - name: essential-dirs
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/lib/ffmpeg
-
   - name: openblas
     no-autogen: true
     make-args:
@@ -110,4 +105,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/bothlab/pomidaq.git
-        tag: v0.6.0
+        tag: v0.6.1
