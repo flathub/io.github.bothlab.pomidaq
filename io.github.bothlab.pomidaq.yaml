@@ -1,6 +1,6 @@
 id: io.github.bothlab.pomidaq
 runtime: org.kde.Platform
-runtime-version: '6.10'
+runtime-version: '6.11'
 sdk: org.kde.Sdk
 command: pomidaq
 rename-icon: pomidaq
@@ -91,11 +91,27 @@ modules:
       - bin
     sources:
       - type: archive
-        url: https://github.com/opencv/opencv/archive/refs/tags/4.12.0.tar.gz
-        sha256: 44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d
+        url: https://github.com/opencv/opencv/archive/refs/tags/4.14.0.tar.gz
+        sha256: ee8fb9b30eb60850431b4656447080e3737b56e45719c92b67f245950609f86e
       - type: archive
-        url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.12.0.tar.gz
-        sha256: 4197722b4c5ed42b476d42e29beb29a52b6b25c34ec7b4d589c3ae5145fee98e
+        url: https://github.com/opencv/opencv_contrib/archive/refs/tags/4.14.0.tar.gz
+        sha256: 4f17abd1bc7f88e19c3380c8de7cbf2d863aced5b5ee8d8934cc7902b67d42c9
+
+  - name: nlohmann-json
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DJSON_BuildTests=OFF
+    cleanup:
+      - '*'
+    sources:
+      - type: archive
+        url: https://github.com/nlohmann/json/archive/refs/tags/v3.12.0.tar.gz
+        sha256: 4b92eb0c06d10683f7447ce9406cb97cd4b453be18d7279320f7b2f025c10187
+        x-checker-data:
+          type: anitya
+          project-id: 11152
+          url-template: https://github.com/nlohmann/json/archive/refs/tags/v$version.tar.gz
 
   - name: pomidaq
     buildsystem: cmake-ninja
@@ -105,4 +121,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/bothlab/pomidaq.git
-        tag: v0.6.1
+        tag: v1.0.0
